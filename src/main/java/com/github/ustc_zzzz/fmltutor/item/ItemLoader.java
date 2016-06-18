@@ -1,10 +1,13 @@
 package com.github.ustc_zzzz.fmltutor.item;
 
+import com.github.ustc_zzzz.fmltutor.FMLTutor;
+
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPickaxe;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameData;
@@ -60,9 +63,16 @@ public class ItemLoader
     }
 
     @SideOnly(Side.CLIENT)
+    private static void registerRender(Item item, int meta, String name)
+    {
+        ResourceLocation location = new ResourceLocation(FMLTutor.MODID, name);
+        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(location, "inventory"));
+        ModelLoader.registerItemVariants(item, location);
+    }
+
+    @SideOnly(Side.CLIENT)
     private static void registerRender(Item item)
     {
-        String name = GameData.getItemRegistry().getNameForObject(item).toString();
-        ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(name, "inventory"));
+        registerRender(item, 0, GameData.getItemRegistry().getNameForObject(item).getResourcePath());
     }
 }
